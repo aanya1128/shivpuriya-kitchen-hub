@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
@@ -16,9 +17,35 @@ import {
   Menu,
   ChevronDown 
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get initial session
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+    
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
+  };
 
   const categories = [
     "Utensils",
@@ -36,10 +63,8 @@ const Header = () => {
         {/* Main Navigation */}
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">श</span>
-            </div>
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
+            <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-10 h-10 object-contain" />
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-foreground">Shivpuriya</h1>
               <p className="text-xs text-muted-foreground">Patra Bhandar</p>
@@ -48,7 +73,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <Button variant="ghost" className="text-foreground hover:text-primary">
+            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={() => navigate('/')}>
               Home
             </Button>
             
@@ -66,6 +91,14 @@ const Header = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+            
+            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={() => navigate('/about')}>
+              About Us
+            </Button>
+            
+            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={() => navigate('/contact')}>
+              Contact Us
+            </Button>
           </nav>
 
           {/* Search Bar */}
@@ -115,15 +148,31 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-popover border shadow-elegant">
-                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-                  Sign In
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-                  Create Account
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-                  My Orders
-                </DropdownMenuItem>
+                {user ? (
+                  <>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+                      My Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-muted">
+                      My Orders
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={() => navigate('/admin')}>
+                      Admin Panel
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={handleSignOut}>
+                      Sign Out
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={() => navigate('/auth')}>
+                      Sign In
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={() => navigate('/auth')}>
+                      Create Account
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -136,8 +185,14 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
                 <div className="flex flex-col space-y-4 mt-8">
-                  <Button variant="ghost" className="justify-start">
+                  <Button variant="ghost" className="justify-start" onClick={() => navigate('/')}>
                     Home
+                  </Button>
+                  <Button variant="ghost" className="justify-start" onClick={() => navigate('/about')}>
+                    About Us
+                  </Button>
+                  <Button variant="ghost" className="justify-start" onClick={() => navigate('/contact')}>
+                    Contact Us
                   </Button>
                   <div className="space-y-2">
                     <p className="font-semibold text-foreground">Categories</p>
@@ -147,6 +202,22 @@ const Header = () => {
                       </Button>
                     ))}
                   </div>
+                  {user ? (
+                    <div className="space-y-2 pt-4 border-t">
+                      <Button variant="ghost" className="justify-start" onClick={() => navigate('/admin')}>
+                        Admin Panel
+                      </Button>
+                      <Button variant="ghost" className="justify-start" onClick={handleSignOut}>
+                        Sign Out
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2 pt-4 border-t">
+                      <Button variant="ghost" className="justify-start" onClick={() => navigate('/auth')}>
+                        Sign In
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
