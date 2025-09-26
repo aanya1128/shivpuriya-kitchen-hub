@@ -24,9 +24,11 @@ const Footer = () => {
             {/* Store Information */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
-                  <span className="text-secondary-foreground font-bold text-lg">श</span>
-                </div>
+                <img 
+                  src="/favicon.png" 
+                  alt="Shivpuriya Patra Bhandar Logo" 
+                  className="w-10 h-10 object-contain"
+                />
                 <div>
                   <h3 className="text-xl font-bold">Shivpuriya</h3>
                   <p className="text-sm text-primary-foreground/80">Patra Bhandar</p>
@@ -88,24 +90,49 @@ const Footer = () => {
             {/* Quick Links */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Quick Links</h3>
-              <div className="space-y-2">
-                {[
-                  "About Us",
-                  "Shipping Info", 
-                  "Return Policy",
-                  "Track Order",
-                  "Size Guide",
-                  "Bulk Orders",
-                  "Careers"
-                ].map((link) => (
-                  <Button
-                    key={link}
-                    variant="link"
-                    className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
-                  >
-                    {link}
-                  </Button>
-                ))}
+              <div className="flex flex-col space-y-2">
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  About Us
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Shipping Info
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Return Policy
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Track Order
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Size Guide
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Bulk Orders
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Careers
+                </Button>
               </div>
             </div>
 
@@ -132,14 +159,6 @@ const Footer = () => {
                 ))}
               </div>
               
-              {/* Business Hours */}
-              <div className="pt-4">
-                <h4 className="font-semibold mb-2 text-secondary">Store Hours</h4>
-                <div className="text-sm text-primary-foreground/80 space-y-1">
-                  <p>Mon - Sat: 9:00 AM - 8:00 PM</p>
-                  <p>Sunday: 10:00 AM - 6:00 PM</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

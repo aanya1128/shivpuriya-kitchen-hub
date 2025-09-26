@@ -1,29 +1,36 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/hooks/useTheme";
 import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { 
+  Menu, 
   Search, 
-  ShoppingCart, 
   Heart, 
-  User, 
-  Menu,
-  ChevronDown 
+  ShoppingCart, 
+  User,
+  Home,
+  Info,
+  Phone,
+  ChevronDown,
+  Sun,
+  Moon,
+  Globe
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo.png";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+import logoImage from "@/assets/logo.png";
 
 const Header = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     // Get initial session
@@ -47,74 +54,124 @@ const Header = () => {
     navigate('/');
   };
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'hi' : 'en';
+    i18n.changeLanguage(newLang);
+    localStorage.setItem('language', newLang);
+  };
+
+  // Define categories for the navigation
   const categories = [
-    "Utensils",
-    "Pooja Essentials", 
-    "Home Appliances",
-    "Kitchen Appliances",
-    "Gift Sets",
-    "Lunch Boxes",
-    "Water Bottles"
+    { key: "copperware", name: t("copperware") },
+    { key: "steelware", name: t("steelware") },
+    { key: "brassware", name: t("brassware") },
+    { key: "poojaEssentials", name: t("poojaEssentials") },
+    { key: "cutlery", name: t("cutlery") },
+    { key: "homeAppliances", name: t("homeAppliances") },
+    { key: "kitchenAppliances", name: t("kitchenAppliances") },
+    { key: "schoolEssentials", name: t("schoolEssentials") }
   ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container mx-auto px-4">
-        {/* Main Navigation */}
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate('/')}>
-            <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-10 h-10 object-contain" />
+          {/* Logo and Company Name */}
+          <div className="flex items-center space-x-3">
+            <img 
+              src={logoImage} 
+              alt="Shivpuriya Patra Bhandar Logo" 
+              className="w-12 h-12 object-contain"
+            />
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-foreground">Shivpuriya</h1>
-              <p className="text-xs text-muted-foreground">Patra Bhandar</p>
+              <h1 className="text-2xl font-bold text-foreground">{t('companyName')}</h1>
+              <p className="text-sm text-muted-foreground">Authentic Utensils & Modern Appliances</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={() => navigate('/')}>
-              Home
-            </Button>
+            <Link 
+              to="/" 
+              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+            >
+              <Home className="h-4 w-4" />
+              <span>{t('home')}</span>
+            </Link>
             
+            {/* Shop Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-foreground hover:text-primary">
-                  Categories <ChevronDown className="ml-1 h-4 w-4" />
+                <Button variant="ghost" className="flex items-center space-x-1">
+                  <span>{t('shop')}</span>
+                  <ChevronDown className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48 bg-popover border shadow-elegant">
+              <DropdownMenuContent className="w-48">
+                <DropdownMenuItem onClick={() => navigate('/shop')}>
+                  <span>All Products</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 {categories.map((category) => (
-                  <DropdownMenuItem key={category} className="cursor-pointer hover:bg-muted">
-                    {category}
+                  <DropdownMenuItem 
+                    key={category.key} 
+                    onClick={() => navigate(`/shop?category=${category.key}`)}
+                  >
+                    <span>{category.name}</span>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <Link 
+              to="/about" 
+              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+            >
+              <Info className="h-4 w-4" />
+              <span>{t('about')}</span>
+            </Link>
             
-            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={() => navigate('/about')}>
-              About Us
-            </Button>
-            
-            <Button variant="ghost" className="text-foreground hover:text-primary" onClick={() => navigate('/contact')}>
-              Contact Us
-            </Button>
+            <Link 
+              to="/contact" 
+              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+            >
+              <Phone className="h-4 w-4" />
+              <span>{t('contact')}</span>
+            </Link>
           </nav>
 
-          {/* Search Bar */}
-          <div className="hidden md:flex items-center space-x-2 flex-1 max-w-md mx-8">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-4">
+            {/* Search Input - Hidden on mobile */}
+            <div className="hidden md:flex relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Search for products..."
-                className="pl-10 bg-muted/50 border-border focus:border-primary"
+                placeholder={t('searchProducts')}
+                className="pl-10 w-64"
               />
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center space-x-2">
-            {/* Mobile Search */}
+            {/* Theme Toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+            >
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
+
+            {/* Language Toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleLanguage}
+              className="flex items-center space-x-1"
+            >
+              <Globe className="h-4 w-4" />
+              <span className="text-xs">{i18n.language.toUpperCase()}</span>
+            </Button>
+
+            {/* Mobile Search Toggle */}
             <Button
               variant="ghost"
               size="icon"
@@ -127,49 +184,50 @@ const Header = () => {
             {/* Wishlist */}
             <Button variant="ghost" size="icon" className="relative">
               <Heart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-secondary text-secondary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
                 3
-              </span>
+              </Badge>
             </Button>
 
-            {/* Cart */}
+            {/* Shopping Cart */}
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-secondary text-secondary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
                 2
-              </span>
+              </Badge>
             </Button>
 
-            {/* User Account */}
+            {/* User Account Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
                   <User className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-popover border shadow-elegant">
+              <DropdownMenuContent align="end" className="w-48">
                 {user ? (
                   <>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-                      My Profile
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                      {t('myProfile')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-muted">
-                      My Orders
+                    <DropdownMenuItem onClick={() => navigate('/orders')}>
+                      {t('myOrders')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={() => navigate('/admin')}>
-                      Admin Panel
+                    <DropdownMenuItem onClick={() => navigate('/admin')}>
+                      {t('adminPanel')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={handleSignOut}>
-                      Sign Out
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut}>
+                      {t('logout')}
                     </DropdownMenuItem>
                   </>
                 ) : (
                   <>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={() => navigate('/auth')}>
-                      Sign In
+                    <DropdownMenuItem onClick={() => navigate('/auth')}>
+                      {t('login')}
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-muted" onClick={() => navigate('/auth')}>
-                      Create Account
+                    <DropdownMenuItem onClick={() => navigate('/auth')}>
+                      {t('signup')}
                     </DropdownMenuItem>
                   </>
                 )}
@@ -184,40 +242,59 @@ const Header = () => {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
-                <div className="flex flex-col space-y-4 mt-8">
-                  <Button variant="ghost" className="justify-start" onClick={() => navigate('/')}>
-                    Home
+                <SheetHeader>
+                  <SheetTitle>Menu</SheetTitle>
+                </SheetHeader>
+                <div className="space-y-4">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start"
+                    onClick={() => navigate('/')}
+                  >
+                    <Home className="mr-2 h-4 w-4" />
+                    {t('home')}
                   </Button>
-                  <Button variant="ghost" className="justify-start" onClick={() => navigate('/about')}>
-                    About Us
-                  </Button>
-                  <Button variant="ghost" className="justify-start" onClick={() => navigate('/contact')}>
-                    Contact Us
-                  </Button>
-                  <div className="space-y-2">
-                    <p className="font-semibold text-foreground">Categories</p>
-                    {categories.map((category) => (
-                      <Button key={category} variant="ghost" className="justify-start pl-4 text-sm">
-                        {category}
+                  
+                  <div>
+                    <h3 className="font-semibold mb-2 px-3">{t('shop')}</h3>
+                    <div className="space-y-1">
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start px-6"
+                        onClick={() => navigate('/shop')}
+                      >
+                        All Products
                       </Button>
-                    ))}
+                      {categories.map((category) => (
+                        <Button
+                          key={category.key}
+                          variant="ghost"
+                          className="w-full justify-start px-6"
+                          onClick={() => navigate(`/shop?category=${category.key}`)}
+                        >
+                          {category.name}
+                        </Button>
+                      ))}
+                    </div>
                   </div>
-                  {user ? (
-                    <div className="space-y-2 pt-4 border-t">
-                      <Button variant="ghost" className="justify-start" onClick={() => navigate('/admin')}>
-                        Admin Panel
-                      </Button>
-                      <Button variant="ghost" className="justify-start" onClick={handleSignOut}>
-                        Sign Out
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-2 pt-4 border-t">
-                      <Button variant="ghost" className="justify-start" onClick={() => navigate('/auth')}>
-                        Sign In
-                      </Button>
-                    </div>
-                  )}
+                  
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start"
+                    onClick={() => navigate('/about')}
+                  >
+                    <Info className="mr-2 h-4 w-4" />
+                    {t('about')}
+                  </Button>
+                  
+                  <Button 
+                    variant="ghost" 
+                    className="w-full justify-start"
+                    onClick={() => navigate('/contact')}
+                  >
+                    <Phone className="mr-2 h-4 w-4" />
+                    {t('contact')}
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>
@@ -226,12 +303,12 @@ const Header = () => {
 
         {/* Mobile Search Bar */}
         {isSearchOpen && (
-          <div className="md:hidden pb-4 animate-fade-in">
+          <div className="md:hidden px-4 py-3 border-t bg-background">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Search for products..."
-                className="pl-10 bg-muted/50 border-border focus:border-primary"
+                placeholder={t('searchProducts')}
+                className="pl-10 w-full"
               />
             </div>
           </div>
