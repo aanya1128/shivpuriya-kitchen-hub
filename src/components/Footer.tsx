@@ -20,7 +20,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         {/* Main Footer Content */}
         <div className="py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Store Information */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
@@ -132,7 +132,7 @@ const Footer = () => {
 
             {/* Customer Service */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Customer Service</h3>
+              <h3 className="text-lg font-semibold">Customer Services</h3>
               <div className="flex flex-col space-y-2">
                 <Button
                   variant="link"

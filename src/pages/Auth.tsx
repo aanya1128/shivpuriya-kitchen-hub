@@ -8,7 +8,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Mail, Phone, User, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Phone, User, Lock, ArrowLeft } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { z } from "zod";
 
@@ -359,6 +359,16 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="absolute top-4 left-4">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to Home</span>
+        </Button>
+      </div>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -407,6 +417,8 @@ const Auth = () => {
                         name="email"
                         type="email"
                         placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
                       />
                     </div>
@@ -418,6 +430,8 @@ const Auth = () => {
                           name="password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Enter your password"
+                          value={formData.password}
+                          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                           required
                         />
                         <Button
@@ -444,6 +458,8 @@ const Auth = () => {
                         name="phone"
                         type="tel"
                         placeholder="+91 9999999999"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
                       />
                     </div>
@@ -468,6 +484,8 @@ const Auth = () => {
                     id="fullName"
                     name="fullName"
                     placeholder="Enter your full name"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     required
                   />
                 </div>
@@ -478,6 +496,8 @@ const Auth = () => {
                     name="email"
                     type="email"
                     placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     required
                   />
                 </div>
@@ -488,6 +508,8 @@ const Auth = () => {
                     name="phone"
                     type="tel"
                     placeholder="+91 9999999999"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
@@ -498,6 +520,8 @@ const Auth = () => {
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="Create a password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                       required
                       minLength={6}
                     />
