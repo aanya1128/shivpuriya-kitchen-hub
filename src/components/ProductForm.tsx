@@ -402,6 +402,36 @@ const ProductForm = ({ productId, onSuccess, onCancel }: ProductFormProps) => {
             </div>
           </div>
 
+          {/* Status and Featured Settings */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select value={formData.status} onValueChange={(value: "active" | "inactive" | "out_of_stock") => setFormData({ ...formData, status: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="inactive">Inactive</SelectItem>
+                  <SelectItem value="out_of_stock">Out of Stock</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="is_featured"
+                  checked={formData.is_featured}
+                  onChange={(e) => setFormData({ ...formData, is_featured: e.target.checked })}
+                  className="rounded border-gray-300"
+                />
+                <Label htmlFor="is_featured">Featured Product</Label>
+              </div>
+            </div>
+          </div>
+
           <div className="flex gap-4 pt-6">
             <Button type="submit" disabled={loading} className="flex-1">
               {loading ? "Saving..." : productId ? "Update Product" : "Create Product"}

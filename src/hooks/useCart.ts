@@ -16,6 +16,13 @@ export const useCart = () => {
 
   useEffect(() => {
     checkAuth();
+    
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const checkAuth = async () => {
@@ -49,7 +56,7 @@ export const useCart = () => {
         .select("id, quantity")
         .eq("user_id", user.id)
         .eq("product_id", product.id)
-        .single();
+        .maybeSingle();
 
       if (existingItem) {
         // Update existing item
@@ -116,7 +123,7 @@ export const useCart = () => {
         .select("id")
         .eq("user_id", user.id)
         .eq("product_id", product.id)
-        .single();
+        .maybeSingle();
 
       if (existingItem) {
         toast({

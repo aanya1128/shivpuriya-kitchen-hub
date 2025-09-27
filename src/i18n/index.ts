@@ -27,11 +27,52 @@ const resources = {
       addToCart: "Add to Cart",
       addToWishlist: "Add to Wishlist",
       
+      // Common
+      name: "Name",
+      email: "Email",
+      phone: "Phone",
+      address: "Address",
+      submit: "Submit",
+      cancel: "Cancel",
+      save: "Save",
+      edit: "Edit",
+      delete: "Delete",
+      back: "Back",
+      
       // Search & Filter
       searchPlaceholder: "Search products...",
       priceFilter: "Price Filter",
       categoryFilter: "Category Filter",
       sortOptions: "Sort Options",
+      
+      // Contact Page
+      getInTouch: "Get in Touch",
+      contactInformation: "Contact Information",
+      sendMessage: "Send us a Message",
+      firstName: "First Name",
+      lastName: "Last Name",
+      subject: "Subject",
+      message: "Message",
+      sendingMessage: "Sending...",
+      
+      // Product Management
+      addProduct: "Add Product",
+      editProduct: "Edit Product",
+      productName: "Product Name",
+      description: "Description",
+      price: "Price",
+      comparePrice: "Compare Price",
+      stockQuantity: "Stock Quantity",
+      material: "Material",
+      sku: "SKU",
+      weight: "Weight",
+      tags: "Tags",
+      images: "Images",
+      status: "Status",
+      featured: "Featured",
+      active: "Active",
+      inactive: "Inactive",
+      outOfStock: "Out of Stock",
       
       // Categories
       copperware: "Copperware",
@@ -72,11 +113,52 @@ const resources = {
       addToCart: "कार्ट में जोड़ें",
       addToWishlist: "विशलिस्ट में जोड़ें",
       
+      // Common
+      name: "नाम",
+      email: "ईमेल",
+      phone: "फोन",
+      address: "पता",
+      submit: "जमा करें",
+      cancel: "रद्द करें",
+      save: "सेव करें",
+      edit: "संपादित करें",
+      delete: "हटाएं",
+      back: "वापस",
+      
       // Search & Filter
       searchPlaceholder: "उत्पाद खोजें...",
       priceFilter: "मूल्य फिल्टर",
       categoryFilter: "श्रेणी फिल्टर",
       sortOptions: "सॉर्ट विकल्प",
+      
+      // Contact Page
+      getInTouch: "संपर्क करें",
+      contactInformation: "संपर्क जानकारी",
+      sendMessage: "हमें संदेश भेजें",
+      firstName: "प्रथम नाम",
+      lastName: "अंतिम नाम",
+      subject: "विषय",
+      message: "संदेश",
+      sendingMessage: "भेजा जा रहा है...",
+      
+      // Product Management
+      addProduct: "उत्पाद जोड़ें",
+      editProduct: "उत्पाद संपादित करें",
+      productName: "उत्पाद का नाम",
+      description: "विवरण",
+      price: "मूल्य",
+      comparePrice: "तुलना मूल्य",
+      stockQuantity: "स्टॉक मात्रा",
+      material: "सामग्री",
+      sku: "SKU",
+      weight: "वजन",
+      tags: "टैग",
+      images: "छवियां",
+      status: "स्थिति",
+      featured: "फीचर्ड",
+      active: "सक्रिय",
+      inactive: "निष्क्रिय",
+      outOfStock: "स्टॉक खत्म",
       
       // Categories
       copperware: "तांबे के बर्तन",

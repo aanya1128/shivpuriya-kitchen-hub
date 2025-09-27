@@ -17,9 +17,12 @@ const AdminProductModal = ({ isOpen, onClose, productId, onSuccess }: AdminProdu
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" aria-describedby="product-form-description">
         <DialogHeader>
           <DialogTitle>{productId ? "Edit Product" : "Add New Product"}</DialogTitle>
+          <div id="product-form-description" className="sr-only">
+            Form to {productId ? "edit an existing" : "add a new"} product with fields for name, description, price, category, and other details.
+          </div>
         </DialogHeader>
         <ProductForm
           productId={productId}

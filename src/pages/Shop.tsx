@@ -108,12 +108,12 @@ const Shop = () => {
 
   const handleAddToCart = async (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    addToCart(product);
+    await addToCart(product);
   };
 
   const handleAddToWishlist = async (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    addToWishlist(product);
+    await addToWishlist(product);
   };
 
   if (loading) {

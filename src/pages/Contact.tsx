@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,12 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Send } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,11 +46,6 @@ const Contact = () => {
       icon: Mail,
       title: "Email",
       content: "info@shivpuriya.com\nsupport@shivpuriya.com"
-    },
-    {
-      icon: Clock,
-      title: "Business Hours",
-      content: "Monday - Saturday\n9:00 AM - 8:00 PM\nSunday: 10:00 AM - 6:00 PM"
     }
   ];
 
@@ -62,7 +59,7 @@ const Contact = () => {
             <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-24 h-24 object-contain" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Get in Touch
+            {t('getInTouch')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Have questions about our products or need assistance? We're here to help you find the perfect utensils for your home.
@@ -75,7 +72,7 @@ const Contact = () => {
             <div className="lg:col-span-1 space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl text-foreground">Contact Information</CardTitle>
+                  <CardTitle className="text-2xl text-foreground">{t('contactInformation')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {contactInfo.map((info, index) => (
@@ -110,13 +107,13 @@ const Contact = () => {
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl text-foreground">Send us a Message</CardTitle>
+                  <CardTitle className="text-2xl text-foreground">{t('sendMessage')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="firstName">First Name *</Label>
+                        <Label htmlFor="firstName">{t('firstName')} *</Label>
                         <Input
                           id="firstName"
                           name="firstName"
@@ -125,7 +122,7 @@ const Contact = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="lastName">Last Name *</Label>
+                        <Label htmlFor="lastName">{t('lastName')} *</Label>
                         <Input
                           id="lastName"
                           name="lastName"
@@ -137,7 +134,7 @@ const Contact = () => {
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="email">Email *</Label>
+                        <Label htmlFor="email">{t('email')} *</Label>
                         <Input
                           id="email"
                           name="email"
@@ -147,7 +144,7 @@ const Contact = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">{t('phone')}</Label>
                         <Input
                           id="phone"
                           name="phone"
@@ -158,7 +155,7 @@ const Contact = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="subject">Subject *</Label>
+                      <Label htmlFor="subject">{t('subject')} *</Label>
                       <Input
                         id="subject"
                         name="subject"
@@ -168,7 +165,7 @@ const Contact = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="message">Message *</Label>
+                      <Label htmlFor="message">{t('message')} *</Label>
                       <Textarea
                         id="message"
                         name="message"
@@ -185,7 +182,7 @@ const Contact = () => {
                       disabled={isSubmitting}
                     >
                       <Send className="w-4 h-4 mr-2" />
-                      {isSubmitting ? "Sending..." : "Send Message"}
+                      {isSubmitting ? t('sendingMessage') : t('sendMessage')}
                     </Button>
                   </form>
                 </CardContent>
