@@ -127,38 +127,50 @@ const Footer = () => {
                 >
                   Bulk Orders
                 </Button>
-                <Button
-                  variant="link"
-                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
-                >
-                  Careers
-                </Button>
               </div>
             </div>
 
             {/* Customer Service */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Customer Service</h3>
-              <div className="space-y-2">
-                {[
-                  "Help Center",
-                  "Contact Support",
-                  "Privacy Policy",
-                  "Terms & Conditions",
-                  "FAQs",
-                  "Warranty",
-                  "Feedback"
-                ].map((link) => (
-                  <Button
-                    key={link}
-                    variant="link"
-                    className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
-                  >
-                    {link}
-                  </Button>
-                ))}
+              <div className="flex flex-col space-y-2">
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Help Center
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Contact Support
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Privacy Policy
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Terms & Conditions
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  FAQs
+                </Button>
+                <Button
+                  variant="link"
+                  className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
+                >
+                  Warranty
+                </Button>
               </div>
-              
             </div>
           </div>
         </div>

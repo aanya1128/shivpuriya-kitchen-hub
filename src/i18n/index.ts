@@ -33,8 +33,8 @@ const resources = {
       brassware: "Brassware",
       poojaEssentials: "Pooja Essentials",
       cutlery: "Cutlery",
-      homeAppliances: "Home Appliances",
-      kitchenAppliances: "Kitchen Appliances",
+      homeEssentials: "Home Essentials",
+      kitchenEssentials: "Kitchen Essentials",
       schoolEssentials: "School Essentials",
       
       // Company
@@ -72,8 +72,8 @@ const resources = {
       brassware: "पीतल के बर्तन",
       poojaEssentials: "पूजा सामग्री",
       cutlery: "कटलरी",
-      homeAppliances: "घरेलू उपकरण",
-      kitchenAppliances: "रसोई उपकरण",
+      homeEssentials: "घरेलू आवश्यकताएं",
+      kitchenEssentials: "रसोई की आवश्यकताएं",
       schoolEssentials: "स्कूल की आवश्यकताएं",
       
       // Company

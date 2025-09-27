@@ -69,8 +69,8 @@ const Header = () => {
     { key: "brassware", name: t("brassware") },
     { key: "poojaEssentials", name: t("poojaEssentials") },
     { key: "cutlery", name: t("cutlery") },
-    { key: "homeAppliances", name: t("homeAppliances") },
-    { key: "kitchenAppliances", name: t("kitchenAppliances") },
+    { key: "homeEssentials", name: t("homeEssentials") },
+    { key: "kitchenEssentials", name: t("kitchenEssentials") },
     { key: "schoolEssentials", name: t("schoolEssentials") }
   ];
 
@@ -86,7 +86,7 @@ const Header = () => {
               className="w-12 h-12 object-contain"
             />
             <div className="hidden sm:block">
-              <h1 className="text-2xl font-bold text-foreground">{t('companyName')}</h1>
+              <h1 className="text-2xl lg:text-3xl font-bold text-foreground">{t('companyName')}</h1>
               <p className="text-sm text-muted-foreground">Authentic Utensils & Modern Appliances</p>
             </div>
           </div>
@@ -101,29 +101,12 @@ const Header = () => {
               <span>{t('home')}</span>
             </Link>
             
-            {/* Shop Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-1">
-                  <span>{t('shop')}</span>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-48">
-                <DropdownMenuItem onClick={() => navigate('/shop')}>
-                  <span>All Products</span>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                {categories.map((category) => (
-                  <DropdownMenuItem 
-                    key={category.key} 
-                    onClick={() => navigate(`/shop?category=${category.key}`)}
-                  >
-                    <span>{category.name}</span>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link 
+              to="/shop" 
+              className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors"
+            >
+              <span>{t('shop')}</span>
+            </Link>
 
             <Link 
               to="/about" 
