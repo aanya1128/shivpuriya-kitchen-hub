@@ -1,133 +1,371 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { supabase } from "@/integrations/supabase/client";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { Eye, EyeOff, Mail, Phone } from "lucide-react";
+import { Eye, EyeOff, Mail, Phone, User, Lock } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { z } from "zod";
+
+const emailSchema = z.string().email({ message: "Invalid email address" });
+const phoneSchema = z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number" });
+const passwordSchema = z.string().min(6, { message: "Password must be at least 6 characters" });
 
 const Auth = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [authType, setAuthType] = useState<'email' | 'phone'>('email');
+  const [authType, setAuthType] = useState<"email" | "phone">("email");
+  const [otpStep, setOtpStep] = useState(false);
+  const [resetStep, setResetStep] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    phone: "",
+    password: "",
+    fullName: "",
+    resetEmail: ""
+  });
+  
   const { toast } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuth = async () => {
+    const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate('/');
+        // Check if user is admin
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (profile?.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       }
     };
-    checkAuth();
+    checkUser();
   }, [navigate]);
 
-  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const fullName = formData.get('fullName') as string;
-    const phone = formData.get('phone') as string;
-    
+  const validateInput = (field: string, value: string) => {
     try {
+      switch (field) {
+        case "email":
+          emailSchema.parse(value);
+          return true;
+        case "phone":
+          phoneSchema.parse(value);
+          return true;
+        case "password":
+          passwordSchema.parse(value);
+          return true;
+        default:
+          return true;
+      }
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        toast({
+          variant: "destructive",
+          title: "Validation Error",
+          description: error.issues[0].message,
+        });
+      }
+      return false;
+    }
+  };
+
+  const handleSignUp = async () => {
+    if (!validateInput("email", formData.email) || !validateInput("password", formData.password)) {
+      return;
+    }
+
+    if (!formData.fullName.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Full name is required",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const redirectUrl = `${window.location.origin}/`;
       const { error } = await supabase.auth.signUp({
-        email,
-        password,
+        email: formData.email,
+        password: formData.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/`,
+          emailRedirectTo: redirectUrl,
           data: {
-            full_name: fullName,
-            phone: phone
+            full_name: formData.fullName,
+            phone: formData.phone,
           }
         }
       });
-      
+
       if (error) throw error;
-      
+
       toast({
-        title: "Account created successfully!",
+        title: "Success!",
         description: "Please check your email to verify your account.",
       });
     } catch (error: any) {
       toast({
+        variant: "destructive",
         title: "Error",
         description: error.message,
-        variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    
+  const handleSignIn = async () => {
+    if (!validateInput("email", formData.email) || !validateInput("password", formData.password)) {
+      return;
+    }
+
+    setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
       });
-      
+
       if (error) throw error;
-      
-      navigate('/');
+
+      // Check if user is admin
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", data.user.id)
+        .single();
+
+      if (profile?.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
     } catch (error: any) {
       toast({
+        variant: "destructive",
         title: "Error",
         description: error.message,
-        variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  const handlePhoneAuth = async (phone: string) => {
+  const handlePhoneAuth = async () => {
+    if (!validateInput("phone", formData.phone)) {
+      return;
+    }
+
+    setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        phone,
+      // Call edge function to send OTP
+      const { data, error } = await supabase.functions.invoke('send-otp', {
+        body: { phone: formData.phone }
       });
-      
+
       if (error) throw error;
-      
+
+      setOtpStep(true);
       toast({
         title: "OTP Sent",
         description: "Please check your phone for the verification code.",
       });
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message,
         variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to send OTP",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleOtpVerification = async () => {
+    if (otp.length !== 6) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please enter a valid 6-digit OTP",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Call edge function to verify OTP
+      const { data, error } = await supabase.functions.invoke('verify-otp', {
+        body: { phone: formData.phone, otp }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Phone number verified successfully.",
+      });
+      
+      navigate("/");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Invalid OTP",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!validateInput("email", formData.resetEmail)) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(formData.resetEmail, {
+        redirectTo: `${window.location.origin}/auth?reset=true`,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Reset Email Sent",
+        description: "Please check your email for password reset instructions.",
+      });
+      setResetStep(false);
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (otpStep) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Verify OTP</CardTitle>
+            <CardDescription>
+              Enter the 6-digit code sent to {formData.phone}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-center">
+              <InputOTP
+                maxLength={6}
+                value={otp}
+                onChange={setOtp}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            </div>
+            <Button
+              onClick={handleOtpVerification}
+              className="w-full"
+              disabled={loading || otp.length !== 6}
+            >
+              {loading ? "Verifying..." : "Verify OTP"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setOtpStep(false)}
+              className="w-full"
+            >
+              Back
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (resetStep) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Reset Password</CardTitle>
+            <CardDescription>
+              Enter your email to receive reset instructions
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="resetEmail">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="resetEmail"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.resetEmail}
+                  onChange={(e) => setFormData({ ...formData, resetEmail: e.target.value })}
+                  className="pl-9"
+                />
+              </div>
+            </div>
+            <Button
+              onClick={handlePasswordReset}
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? "Sending..." : "Send Reset Link"}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setResetStep(false)}
+              className="w-full"
+            >
+              Back to Sign In
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-elegant border-border/50">
-        <CardHeader className="text-center pb-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-20 h-20 object-contain" />
+            <img src={logo} alt="Shivpuriya Patra Bhandar" className="h-16 w-16" />
           </div>
-          <CardTitle className="text-2xl font-bold text-foreground">Welcome Back</CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Sign in to your account or create a new one
-          </CardDescription>
+          <CardTitle className="text-2xl text-primary">Shivpuriya Patra Bhandar</CardTitle>
+          <CardDescription>Welcome! Please sign in to your account</CardDescription>
         </CardHeader>
         
         <CardContent>
@@ -193,8 +431,8 @@ const Auth = () => {
                         </Button>
                       </div>
                     </div>
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? "Signing In..." : "Sign In"}
+                    <Button onClick={handleSignIn} className="w-full" disabled={loading}>
+                      {loading ? "Signing In..." : "Sign In"}
                     </Button>
                   </>
                 ) : (
@@ -212,13 +450,10 @@ const Auth = () => {
                     <Button
                       type="button"
                       className="w-full"
-                      onClick={() => {
-                        const phone = (document.getElementById('phone-signin') as HTMLInputElement)?.value;
-                        if (phone) handlePhoneAuth(phone);
-                      }}
-                      disabled={isLoading}
+                      onClick={handlePhoneAuth}
+                      disabled={loading}
                     >
-                      {isLoading ? "Sending OTP..." : "Send OTP"}
+                      {loading ? "Sending OTP..." : "Send OTP"}
                     </Button>
                   </>
                 )}
@@ -277,8 +512,8 @@ const Auth = () => {
                     </Button>
                   </div>
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating Account..." : "Create Account"}
+                <Button onClick={handleSignUp} className="w-full" disabled={loading}>
+                  {loading ? "Creating Account..." : "Create Account"}
                 </Button>
               </form>
             </TabsContent>
