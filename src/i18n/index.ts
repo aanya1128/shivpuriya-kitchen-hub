@@ -27,6 +27,12 @@ const resources = {
       addToCart: "Add to Cart",
       addToWishlist: "Add to Wishlist",
       
+      // Search & Filter
+      searchPlaceholder: "Search products...",
+      priceFilter: "Price Filter",
+      categoryFilter: "Category Filter",
+      sortOptions: "Sort Options",
+      
       // Categories
       copperware: "Copperware",
       steelware: "Steelware",
@@ -65,6 +71,12 @@ const resources = {
       category: "श्रेणी",
       addToCart: "कार्ट में जोड़ें",
       addToWishlist: "विशलिस्ट में जोड़ें",
+      
+      // Search & Filter
+      searchPlaceholder: "उत्पाद खोजें...",
+      priceFilter: "मूल्य फिल्टर",
+      categoryFilter: "श्रेणी फिल्टर",
+      sortOptions: "सॉर्ट विकल्प",
       
       // Categories
       copperware: "तांबे के बर्तन",
