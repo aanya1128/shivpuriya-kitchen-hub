@@ -6,45 +6,59 @@ const Categories = () => {
   const categories = [
     {
       id: 1,
-      name: "Steel Utensils",
+      name: "Copperware",
+      description: "Traditional copper utensils and vessels",
+      image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=500&q=80",
+      itemCount: "50+ items"
+    },
+    {
+      id: 2,
+      name: "Steelware", 
       description: "Durable stainless steel cookware",
       image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
       itemCount: "150+ items"
     },
     {
-      id: 2,
-      name: "Copper & Brass",
-      description: "Traditional copper and brass items",
+      id: 3,
+      name: "Brassware",
+      description: "Authentic brass items and decorative pieces",
       image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=500&q=80",
       itemCount: "80+ items"
     },
     {
-      id: 3,
+      id: 4,
       name: "Pooja Essentials",
       description: "Religious items and accessories",
       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80",
       itemCount: "120+ items"
     },
     {
-      id: 4,
-      name: "Kitchen Appliances",
-      description: "Modern kitchen equipment",
-      image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
-      itemCount: "60+ items"
-    },
-    {
       id: 5,
-      name: "Home Appliances",
-      description: "Iron, chimney and more",
-      image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=500&q=80",
+      name: "Cutlery",
+      description: "Kitchen knives, spoons, and eating utensils",
+      image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
       itemCount: "40+ items"
     },
     {
       id: 6,
-      name: "Gift Sets",
-      description: "Perfect gift combinations",
+      name: "Home Essentials",
+      description: "Home appliances and household items",
+      image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=500&q=80",
+      itemCount: "60+ items"
+    },
+    {
+      id: 7,
+      name: "Kitchen Essentials", 
+      description: "Modern kitchen appliances and tools",
+      image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
+      itemCount: "70+ items"
+    },
+    {
+      id: 8,
+      name: "School Essentials",
+      description: "School and office supplies",
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=500&q=80",
-      itemCount: "25+ sets"
+      itemCount: "25+ items"
     }
   ];
 
