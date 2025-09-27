@@ -99,7 +99,7 @@ const Auth = () => {
     setLoading(true);
     try {
       const redirectUrl = `${window.location.origin}/`;
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -107,6 +107,8 @@ const Auth = () => {
           data: {
             full_name: formData.fullName,
             phone: formData.phone,
+            // Set role to admin if using admin credentials
+            role: formData.email === 'admin@shivpuriya.com' ? 'admin' : 'customer'
           }
         }
       });
