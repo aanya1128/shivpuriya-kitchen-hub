@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { User as SupabaseUser } from "@supabase/supabase-js";
 import logoImage from "@/assets/logo.png";
+import CartSheet from "@/components/CartSheet";
+import WishlistSheet from "@/components/WishlistSheet";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -182,20 +184,10 @@ const Header = () => {
             </Button>
 
             {/* Wishlist */}
-            <Button variant="ghost" size="icon" className="relative">
-              <Heart className="h-5 w-5" />
-              <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
-                3
-              </Badge>
-            </Button>
+            <WishlistSheet />
 
             {/* Shopping Cart */}
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <Badge variant="destructive" className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs">
-                2
-              </Badge>
-            </Button>
+            <CartSheet />
 
             {/* User Account Dropdown */}
             <DropdownMenu>

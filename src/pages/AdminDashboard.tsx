@@ -17,6 +17,7 @@ import {
   Eye
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import AdminProductModal from "@/components/AdminProductModal";
 import logo from "@/assets/logo.png";
 
 const AdminDashboard = () => {
@@ -30,6 +31,8 @@ const AdminDashboard = () => {
   });
   const [orders, setOrders] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | undefined>();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -134,6 +137,46 @@ const AdminDashboard = () => {
       case 'cancelled': return 'destructive';
       default: return 'secondary';
     }
+  };
+
+  const handleAddProduct = () => {
+    setEditingProductId(undefined);
+    setShowProductModal(true);
+  };
+
+  const handleEditProduct = (productId: string) => {
+    setEditingProductId(productId);
+    setShowProductModal(true);
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    
+    try {
+      const { error } = await supabase
+        .from("products")
+        .delete()
+        .eq("id", productId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Product deleted successfully",
+      });
+      
+      fetchDashboardData();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleProductModalSuccess = () => {
+    fetchDashboardData();
   };
 
   if (!isAdmin) {
@@ -276,7 +319,7 @@ const AdminDashboard = () => {
                   <CardTitle>Products Management</CardTitle>
                   <CardDescription>Manage your product catalog</CardDescription>
                 </div>
-                <Button>
+                <Button onClick={handleAddProduct}>
                   <Plus className="w-4 h-4 mr-2" />
                   Add Product
                 </Button>
@@ -305,13 +348,13 @@ const AdminDashboard = () => {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => navigate(`/product/${product.id}`)}>
                           <Eye className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => handleEditProduct(product.id)}>
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => handleDeleteProduct(product.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -347,6 +390,13 @@ const AdminDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <AdminProductModal
+        isOpen={showProductModal}
+        onClose={() => setShowProductModal(false)}
+        productId={editingProductId}
+        onSuccess={handleProductModalSuccess}
+      />
     </div>
   );
 };

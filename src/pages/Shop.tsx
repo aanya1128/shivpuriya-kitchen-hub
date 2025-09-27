@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Heart, ShoppingCart, Search, Filter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/hooks/useCart";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -36,6 +37,7 @@ const Shop = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { addToCart, addToWishlist } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -106,20 +108,12 @@ const Shop = () => {
 
   const handleAddToCart = async (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    // Add to cart logic here
-    toast({
-      title: "Added to Cart",
-      description: `${product.name} has been added to your cart`,
-    });
+    addToCart(product);
   };
 
   const handleAddToWishlist = async (product: Product, e: React.MouseEvent) => {
     e.stopPropagation();
-    // Add to wishlist logic here
-    toast({
-      title: "Added to Wishlist",
-      description: `${product.name} has been added to your wishlist`,
-    });
+    addToWishlist(product);
   };
 
   if (loading) {

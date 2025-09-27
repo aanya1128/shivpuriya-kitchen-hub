@@ -59,7 +59,7 @@ const Hero = () => {
             <Button 
               size="lg" 
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-2xl px-10 py-7 text-xl font-bold rounded-full border-2 border-white/20 hover:scale-105 transition-all duration-300"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/shop')}
             >
               <ShoppingBag className="mr-3 h-6 w-6" />
               Shop Now
