@@ -69,7 +69,7 @@ const resources = {
       tags: "Tags",
       images: "Images",
       status: "Status",
-      featured: "Featured",
+      productFeatured: "Featured",
       active: "Active",
       inactive: "Inactive",
       outOfStock: "Out of Stock",
@@ -78,11 +78,57 @@ const resources = {
       copperware: "Copperware",
       steelware: "Steelware",
       brassware: "Brassware",
-      poojaEssentials: "Pooja Essentials",
+      poojaessentials: "Pooja Essentials",
       cutlery: "Cutlery",
-      homeEssentials: "Home Essentials",
-      kitchenEssentials: "Kitchen Essentials",
-      schoolEssentials: "School Essentials",
+      homeessentials: "Home Essentials",
+      kitchensupplies: "Kitchen Supplies",
+      schoolessentials: "School Essentials",
+      giftsets: "Gift Sets",
+      
+      // Hero
+      trustedSince: "Trusted Since 1985 • Kalapipal, Madhya Pradesh",
+      welcomeTo: "Welcome to",
+      heroSubheading: "Discover authentic brass, copper, and steel utensils crafted with tradition. Your trusted destination for premium cookware and modern kitchen solutions.",
+      shopNow: "Shop Now",
+      learnMore: "Learn More",
+      
+      // Shop Page
+      allCategories: "All Categories",
+      productsFound: "products found",
+      noProductsFound: "No products found matching your criteria",
+      sortByName: "Name A-Z",
+      sortByPriceLow: "Price: Low to High",
+      sortByPriceHigh: "Price: High to Low",
+      sortByNewest: "Newest",
+      sortByPopular: "Most Popular",
+      featured: "Featured",
+      
+      // Cart & Wishlist
+      viewCart: "View Cart",
+      viewWishlist: "View Wishlist",
+      removeFromCart: "Remove from cart",
+      removeFromWishlist: "Remove from wishlist",
+      
+      // Footer
+      quickLinks: "Quick Links",
+      followUs: "Follow Us",
+      copyright: "© 2024 Shivpuriya Patra Bhandar. All rights reserved.",
+      
+      // Admin
+      dashboard: "Dashboard",
+      totalUsers: "Total Users",
+      totalOrders: "Total Orders",
+      totalProducts: "Total Products",
+      totalRevenue: "Total Revenue",
+      recentOrders: "Recent Orders",
+      productsManagement: "Products Management",
+      customerManagement: "Customer Management",
+      analytics: "Analytics",
+      orders: "Orders",
+      products: "Products",
+      customers: "Customers",
+      coupons: "Coupons",
+      settings: "Settings",
       
       // Company
       companyName: "Shivpuriya Patra Bhandar"
@@ -155,7 +201,7 @@ const resources = {
       tags: "टैग",
       images: "छवियां",
       status: "स्थिति",
-      featured: "फीचर्ड",
+      productFeatured: "फीचर्ड",
       active: "सक्रिय",
       inactive: "निष्क्रिय",
       outOfStock: "स्टॉक खत्म",
@@ -164,11 +210,57 @@ const resources = {
       copperware: "तांबे के बर्तन",
       steelware: "स्टील के बर्तन",
       brassware: "पीतल के बर्तन",
-      poojaEssentials: "पूजा सामग्री",
+      poojaessentials: "पूजा सामग्री",
       cutlery: "कटलरी",
-      homeEssentials: "घरेलू आवश्यकताएं",
-      kitchenEssentials: "रसोई की आवश्यकताएं",
-      schoolEssentials: "स्कूल की आवश्यकताएं",
+      homeessentials: "घरेलू आवश्यकताएं",
+      kitchensupplies: "रसोई की आपूर्ति",
+      schoolessentials: "स्कूल की आवश्यकताएं",
+      giftsets: "उपहार सेट",
+      
+      // Hero
+      trustedSince: "1985 से विश्वसनीय • कलापीपल, मध्य प्रदेश",
+      welcomeTo: "में आपका स्वागत है",
+      heroSubheading: "परंपरा के साथ तैयार किए गए प्रामाणिक पीतल, तांबे और स्टील के बर्तनों की खोज करें। प्रीमियम कुकवेयर और आधुनिक रसोई समाधान के लिए आपका विश्वसनीय गंतव्य।",
+      shopNow: "अभी खरीदें",
+      learnMore: "और जानें",
+      
+      // Shop Page
+      allCategories: "सभी श्रेणियाँ",
+      productsFound: "उत्पाद मिले",
+      noProductsFound: "आपके मानदंडों से मेल खाने वाला कोई उत्पाद नहीं मिला",
+      sortByName: "नाम अ-ज",
+      sortByPriceLow: "मूल्य: कम से अधिक",
+      sortByPriceHigh: "मूल्य: अधिक से कम",
+      sortByNewest: "नवीनतम",
+      sortByPopular: "सबसे लोकप्रिय",
+      featured: "फीचर्ड",
+      
+      // Cart & Wishlist
+      viewCart: "कार्ट देखें",
+      viewWishlist: "विशलिस्ट देखें",
+      removeFromCart: "कार्ट से हटाएं",
+      removeFromWishlist: "विशलिस्ट से हटाएं",
+      
+      // Footer
+      quickLinks: "त्वरित लिंक",
+      followUs: "हमें फॉलो करें",
+      copyright: "© 2024 शिवपुरिया पात्र भंडार। सर्वाधिकार सुरक्षित।",
+      
+      // Admin
+      dashboard: "डैशबोर्ड",
+      totalUsers: "कुल उपयोगकर्ता",
+      totalOrders: "कुल ऑर्डर",
+      totalProducts: "कुल उत्पाद",
+      totalRevenue: "कुल राजस्व",
+      recentOrders: "हाल के ऑर्डर",
+      productsManagement: "उत्पाद प्रबंधन",
+      customerManagement: "ग्राहक प्रबंधन",
+      analytics: "विश्लेषण",
+      orders: "ऑर्डर",
+      products: "उत्पाद",
+      customers: "ग्राहक",
+      coupons: "कूपन",
+      settings: "सेटिंग्स",
       
       // Company
       companyName: "शिवपुरिया पात्र भंडार"

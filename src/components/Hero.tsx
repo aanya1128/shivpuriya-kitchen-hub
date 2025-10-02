@@ -74,21 +74,6 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* Features */}
-          <div className="flex flex-wrap justify-center gap-8 text-white/90 animate-fade-in">
-            <div className="flex items-center space-x-3 bg-white/10 rounded-full px-6 py-3 backdrop-blur-md">
-              <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
-              <span className="text-lg font-medium">Free Delivery</span>
-            </div>
-            <div className="flex items-center space-x-3 bg-white/10 rounded-full px-6 py-3 backdrop-blur-md">
-              <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
-              <span className="text-lg font-medium">Quality Assured</span>
-            </div>
-            <div className="flex items-center space-x-3 bg-white/10 rounded-full px-6 py-3 backdrop-blur-md">
-              <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
-              <span className="text-lg font-medium">Easy Returns</span>
-            </div>
-          </div>
         </div>
       </div>
 

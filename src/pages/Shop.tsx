@@ -157,25 +157,29 @@ const Shop = () => {
 
               {/* Categories */}
               <div>
-                <h3 className="font-semibold mb-3">Categories</h3>
+                <h3 className="font-semibold mb-3">{t('category')}</h3>
                 <div className="space-y-2">
                   <Button
                     variant={selectedCategory === "" ? "default" : "ghost"}
                     className="w-full justify-start"
                     onClick={() => setSelectedCategory("")}
                   >
-                    All Categories
+                    {t('hi' === 'hi' ? 'सभी श्रेणियाँ' : 'All Categories')}
                   </Button>
-                  {categories.map((category) => (
-                    <Button
-                      key={category.id}
-                      variant={selectedCategory === category.id ? "default" : "ghost"}
-                      className="w-full justify-start"
-                      onClick={() => setSelectedCategory(category.id)}
-                    >
-                      {category.name}
-                    </Button>
-                  ))}
+                  {categories
+                    .filter((category, index, self) => 
+                      index === self.findIndex((c) => c.name === category.name)
+                    )
+                    .map((category) => (
+                      <Button
+                        key={category.id}
+                        variant={selectedCategory === category.id ? "default" : "ghost"}
+                        className="w-full justify-start"
+                        onClick={() => setSelectedCategory(category.id)}
+                      >
+                        {t(category.name.toLowerCase().replace(/\s+/g, ''))}
+                      </Button>
+                    ))}
                 </div>
               </div>
 

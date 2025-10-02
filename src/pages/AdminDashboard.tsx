@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AdminSidebar } from "@/components/AdminSidebar";
 import { 
   Users, 
   ShoppingCart, 
@@ -191,30 +193,35 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-10 h-10 object-contain" />
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
-                <p className="text-sm text-muted-foreground">Shivpuriya Patra Bhandar</p>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <AdminSidebar />
+        
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <header className="border-b bg-card sticky top-0 z-10">
+            <div className="px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <SidebarTrigger />
+                  <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-10 h-10 object-contain" />
+                  <div>
+                    <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
+                    <p className="text-sm text-muted-foreground">Shivpuriya Patra Bhandar</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm text-muted-foreground hidden md:block">Welcome, {user?.email}</span>
+                  <Button variant="outline" onClick={handleSignOut}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-muted-foreground">Welcome, {user?.email}</span>
-              <Button variant="outline" onClick={handleSignOut}>
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+          </header>
 
-      <div className="container mx-auto px-4 py-8">
+          <div className="flex-1 overflow-auto px-4 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
@@ -391,13 +398,15 @@ const AdminDashboard = () => {
         </Tabs>
       </div>
 
-      <AdminProductModal
-        isOpen={showProductModal}
-        onClose={() => setShowProductModal(false)}
-        productId={editingProductId}
-        onSuccess={handleProductModalSuccess}
-      />
-    </div>
+          <AdminProductModal
+            isOpen={showProductModal}
+            onClose={() => setShowProductModal(false)}
+            productId={editingProductId}
+            onSuccess={handleProductModalSuccess}
+          />
+        </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
