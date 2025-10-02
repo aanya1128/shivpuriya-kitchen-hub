@@ -16,7 +16,8 @@ import {
   Plus,
   Edit,
   Trash2,
-  Eye
+  Eye,
+  Home
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import AdminProductModal from "@/components/AdminProductModal";
@@ -211,6 +212,10 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
+                  <Button variant="outline" size="sm" onClick={() => navigate('/')}>
+                    <Home className="w-4 h-4 mr-2" />
+                    Home
+                  </Button>
                   <span className="text-sm text-muted-foreground hidden md:block">Welcome, {user?.email}</span>
                   <Button variant="outline" onClick={handleSignOut}>
                     <LogOut className="w-4 h-4 mr-2" />

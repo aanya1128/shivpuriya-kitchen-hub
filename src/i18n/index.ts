@@ -38,6 +38,8 @@ const resources = {
       edit: "Edit",
       delete: "Delete",
       back: "Back",
+      explore: "Explore",
+      viewAllCategories: "View All Categories",
       
       // Search & Filter
       searchPlaceholder: "Search products...",
@@ -170,6 +172,8 @@ const resources = {
       edit: "संपादित करें",
       delete: "हटाएं",
       back: "वापस",
+      explore: "अन्वेषण करें",
+      viewAllCategories: "सभी श्रेणियां देखें",
       
       // Search & Filter
       searchPlaceholder: "उत्पाद खोजें...",

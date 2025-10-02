@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import heroBackground from "@/assets/hero-background.jpg";
 import logo from "@/assets/logo.png";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   return (
     <section className="relative min-h-[80vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">
@@ -36,22 +38,21 @@ const Hero = () => {
           <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md rounded-full px-6 py-3 mb-8 animate-fade-in border border-white/30">
             <Sparkles className="h-5 w-5 text-secondary animate-pulse" />
             <span className="text-lg font-semibold text-white">
-              Trusted Since 1985 • Kalapipal, Madhya Pradesh
+              {t('trustedSince')}
             </span>
           </div>
 
           {/* Main Heading */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight animate-slide-up">
-            Welcome to
+            {t('welcomeTo')}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-secondary via-yellow-300 to-orange-300 animate-bounce-gentle mt-2">
-              Shivpuriya Patra Bhandar
+              {t('companyName')}
             </span>
           </h1>
 
           {/* Subheading */}
           <p className="text-xl md:text-2xl text-white/95 mb-12 leading-relaxed animate-fade-in max-w-3xl mx-auto">
-            Discover authentic brass, copper, and steel utensils crafted with tradition. 
-            Your trusted destination for premium cookware and modern kitchen solutions.
+            {t('heroSubheading')}
           </p>
 
           {/* CTA Buttons */}
@@ -62,7 +63,7 @@ const Hero = () => {
               onClick={() => navigate('/shop')}
             >
               <ShoppingBag className="mr-3 h-6 w-6" />
-              Shop Now
+              {t('shopNow')}
             </Button>
             <Button 
               variant="outline" 
@@ -70,7 +71,7 @@ const Hero = () => {
               className="border-2 border-white/40 text-white hover:bg-white/20 backdrop-blur-md px-10 py-7 text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300"
               onClick={() => navigate('/about')}
             >
-              Learn More
+              {t('learnMore')}
             </Button>
           </div>
 

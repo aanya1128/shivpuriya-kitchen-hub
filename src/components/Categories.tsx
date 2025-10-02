@@ -1,64 +1,85 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Categories = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const categories = [
     {
       id: 1,
-      name: "Copperware",
+      key: "copperware",
+      name: t("copperware"),
       description: "Traditional copper utensils and vessels",
       image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=500&q=80",
       itemCount: "50+ items"
     },
     {
       id: 2,
-      name: "Steelware", 
+      key: "steelware",
+      name: t("steelware"), 
       description: "Durable stainless steel cookware",
       image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
       itemCount: "150+ items"
     },
     {
       id: 3,
-      name: "Brassware",
+      key: "brassware",
+      name: t("brassware"),
       description: "Authentic brass items and decorative pieces",
       image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=500&q=80",
       itemCount: "80+ items"
     },
     {
       id: 4,
-      name: "Pooja Essentials",
+      key: "poojaessentials",
+      name: t("poojaessentials"),
       description: "Religious items and accessories",
       image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80",
       itemCount: "120+ items"
     },
     {
       id: 5,
-      name: "Cutlery",
+      key: "cutlery",
+      name: t("cutlery"),
       description: "Kitchen knives, spoons, and eating utensils",
       image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
       itemCount: "40+ items"
     },
     {
       id: 6,
-      name: "Home Essentials",
+      key: "homeessentials",
+      name: t("homeessentials"),
       description: "Home appliances and household items",
       image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&w=500&q=80",
       itemCount: "60+ items"
     },
     {
       id: 7,
-      name: "Kitchen Essentials", 
+      key: "kitchensupplies",
+      name: t("kitchensupplies"), 
       description: "Modern kitchen appliances and tools",
       image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=500&q=80",
       itemCount: "70+ items"
     },
     {
       id: 8,
-      name: "School Essentials",
+      key: "schoolessentials",
+      name: t("schoolessentials"),
       description: "School and office supplies",
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=500&q=80",
       itemCount: "25+ items"
+    },
+    {
+      id: 9,
+      key: "giftsets",
+      name: t("giftsets"),
+      description: "Special gift packages",
+      image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=500&q=80",
+      itemCount: "30+ items"
     }
   ];
 
@@ -111,8 +132,9 @@ const Categories = () => {
                 <Button 
                   variant="outline" 
                   className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all"
+                  onClick={() => navigate(`/shop?category=${category.key}`)}
                 >
-                  Explore <ArrowRight className="ml-2 h-4 w-4" />
+                  {t('explore')} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>
@@ -124,8 +146,9 @@ const Categories = () => {
           <Button 
             size="lg" 
             className="bg-primary hover:bg-primary-hover text-primary-foreground px-8 py-3"
+            onClick={() => navigate('/shop')}
           >
-            View All Categories
+            {t('viewAllCategories')}
           </Button>
         </div>
       </div>
