@@ -15,7 +15,6 @@ const resources = {
       signup: "Sign Up",
       logout: "Sign Out",
       myProfile: "My Profile",
-      myOrders: "My Orders",
       adminPanel: "Admin Panel",
       
       // Shop
@@ -133,7 +132,38 @@ const resources = {
       settings: "Settings",
       
       // Company
-      companyName: "Shivpuriya Patra Bhandar"
+      companyName: "Shivpuriya Patra Bhandar",
+      
+      // Checkout & Orders
+      checkout: "Checkout",
+      shippingDetails: "Shipping Details",
+      fullName: "Full Name",
+      city: "City",
+      state: "State",
+      pincode: "Pincode",
+      orderSummary: "Order Summary",
+      subtotal: "Subtotal",
+      shipping: "Shipping",
+      free: "Free",
+      total: "Total",
+      processing: "Processing...",
+      placeOrder: "Place Order",
+      orderPlaced: "Order Placed!",
+      orderSuccess: "Your order has been successfully placed.",
+      myOrders: "My Orders",
+      noOrders: "No orders found",
+      orderNumber: "Order",
+      paymentStatus: "Payment Status",
+      
+      // Account Settings
+      accountSettings: "Account Settings",
+      personalInformation: "Personal Information",
+      emailCannotChange: "Email cannot be changed",
+      saving: "Saving...",
+      saveChanges: "Save Changes",
+      success: "Success",
+      profileUpdated: "Profile updated successfully",
+      error: "Error"
     }
   },
   hi: {
@@ -149,7 +179,6 @@ const resources = {
       signup: "साइन अप",
       logout: "साइन आउट",
       myProfile: "मेरी प्रोफाइल",
-      myOrders: "मेरे ऑर्डर",
       adminPanel: "एडमिन पैनल",
       
       // Shop
@@ -267,7 +296,50 @@ const resources = {
       settings: "सेटिंग्स",
       
       // Company
-      companyName: "शिवपुरिया पात्र भंडार"
+      companyName: "शिवपुरिया पात्र भंडार",
+      
+      // Checkout & Orders
+      checkout: "चेकआउट",
+      shippingDetails: "शिपिंग विवरण",
+      fullName: "पूरा नाम",
+      city: "शहर",
+      state: "राज्य",
+      pincode: "पिनकोड",
+      orderSummary: "ऑर्डर सारांश",
+      subtotal: "उप-योग",
+      shipping: "शिपिंग",
+      free: "मुफ्त",
+      total: "कुल",
+      processing: "प्रोसेस हो रहा है...",
+      placeOrder: "ऑर्डर दें",
+      orderPlaced: "ऑर्डर दिया गया!",
+      orderSuccess: "आपका ऑर्डर सफलतापूर्वक दिया गया है।",
+      myOrders: "मेरे ऑर्डर",
+      noOrders: "कोई ऑर्डर नहीं मिला",
+      orderNumber: "ऑर्डर",
+      paymentStatus: "भुगतान स्थिति",
+      
+      // Account Settings
+      accountSettings: "खाता सेटिंग्स",
+      personalInformation: "व्यक्तिगत जानकारी",
+      emailCannotChange: "ईमेल नहीं बदला जा सकता",
+      saving: "सेव हो रहा है...",
+      saveChanges: "परिवर्तन सेव करें",
+      success: "सफलता",
+      profileUpdated: "प्रोफ़ाइल सफलतापूर्वक अपडेट हुई",
+      error: "त्रुटि",
+      
+      // About Page Content
+      aboutTitle: "शिवपुरिया पात्र भंडार के बारे में",
+      aboutDescription: "1985 में कलापीपल, मध्य प्रदेश के केंद्र में स्थापित, हम लगभग चार दशकों से परिवारों को प्रामाणिक पीतल, तांबे और स्टील के बर्तन प्रदान कर रहे हैं।",
+      ourStory: "हमारी कहानी",
+      whyChooseUs: "हमें क्यों चुनें?",
+      ourValues: "हमारे मूल्य",
+      ourJourney: "हमारी यात्रा",
+      qualityFirst: "गुणवत्ता पहले",
+      customerCentric: "ग्राहक केंद्रित",
+      traditionalValues: "पारंपरिक मूल्य",
+      familyBusiness: "पारिवारिक व्यवसाय"
     }
   }
 };

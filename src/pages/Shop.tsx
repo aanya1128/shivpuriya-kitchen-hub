@@ -156,57 +156,64 @@ const Shop = () => {
               </div>
 
               {/* Categories */}
-              <div>
-                <h3 className="font-semibold mb-3">{t('category')}</h3>
-                <div className="space-y-2">
-                  <Button
-                    variant={selectedCategory === "" ? "default" : "ghost"}
-                    className="w-full justify-start"
-                    onClick={() => setSelectedCategory("")}
-                  >
-                    {t('hi' === 'hi' ? 'सभी श्रेणियाँ' : 'All Categories')}
-                  </Button>
-                  {categories
-                    .filter((category, index, self) => 
-                      index === self.findIndex((c) => c.name === category.name)
-                    )
-                    .map((category) => (
-                      <Button
-                        key={category.id}
-                        variant={selectedCategory === category.id ? "default" : "ghost"}
-                        className="w-full justify-start"
-                        onClick={() => setSelectedCategory(category.id)}
-                      >
-                        {t(category.name.toLowerCase().replace(/\s+/g, ''))}
-                      </Button>
-                    ))}
-                </div>
-              </div>
+              <Card className="border-2">
+                <CardContent className="p-4">
+                  <h3 className="font-bold text-lg mb-4 flex items-center">
+                    <Filter className="h-5 w-5 mr-2" />
+                    {t('categoryFilter')}
+                  </h3>
+                  <div className="space-y-2">
+                    <Button
+                      variant={selectedCategory === "" ? "default" : "ghost"}
+                      className="w-full justify-start hover:bg-accent hover:text-accent-foreground transition-all"
+                      onClick={() => setSelectedCategory("")}
+                    >
+                      {t('allCategories')}
+                    </Button>
+                    {categories
+                      .filter((category, index, self) => 
+                        index === self.findIndex((c) => c.name === category.name)
+                      )
+                      .map((category) => (
+                        <Button
+                          key={category.id}
+                          variant={selectedCategory === category.id ? "default" : "ghost"}
+                          className="w-full justify-start hover:bg-accent hover:text-accent-foreground transition-all"
+                          onClick={() => setSelectedCategory(category.id)}
+                        >
+                          {t(category.name.toLowerCase().replace(/\s+/g, ''))}
+                        </Button>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Sort */}
-              <div>
-                <h3 className="font-semibold mb-3">Sort By</h3>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="name">Name A-Z</SelectItem>
-                    <SelectItem value="price_low">Price: Low to High</SelectItem>
-                    <SelectItem value="price_high">Price: High to Low</SelectItem>
-                    <SelectItem value="newest">Newest</SelectItem>
-                    <SelectItem value="popularity">Most Popular</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Card className="border-2">
+                <CardContent className="p-4">
+                  <h3 className="font-bold text-lg mb-4">{t('sortOptions')}</h3>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="bg-background">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="name">{t('sortByName')}</SelectItem>
+                      <SelectItem value="price_low">{t('sortByPriceLow')}</SelectItem>
+                      <SelectItem value="price_high">{t('sortByPriceHigh')}</SelectItem>
+                      <SelectItem value="newest">{t('sortByNewest')}</SelectItem>
+                      <SelectItem value="popularity">{t('sortByPopular')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
           {/* Products Grid */}
           <div className="lg:w-3/4">
             <div className="mb-6 flex items-center justify-between">
-              <p className="text-muted-foreground">
-                {filteredAndSortedProducts.length} products found
+              <p className="text-muted-foreground text-lg">
+                {filteredAndSortedProducts.length} {t('productsFound')}
               </p>
             </div>
 
@@ -226,7 +233,7 @@ const Shop = () => {
                       />
                       {product.is_featured && (
                         <Badge className="absolute top-2 left-2" variant="secondary">
-                          Featured
+                          {t('productFeatured')}
                         </Badge>
                       )}
                       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -273,7 +280,7 @@ const Shop = () => {
 
             {filteredAndSortedProducts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-muted-foreground">No products found matching your criteria</p>
+                <p className="text-muted-foreground text-lg">{t('noProductsFound')}</p>
               </div>
             )}
           </div>

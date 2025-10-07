@@ -45,7 +45,7 @@ const Hero = () => {
           {/* Main Heading */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight animate-slide-up">
             {t('welcomeTo')}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-secondary via-yellow-300 to-orange-300 animate-bounce-gentle mt-2">
+            <span className="block text-secondary dark:text-secondary animate-bounce-gentle mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               {t('companyName')}
             </span>
           </h1>
@@ -64,14 +64,6 @@ const Hero = () => {
             >
               <ShoppingBag className="mr-3 h-6 w-6" />
               {t('shopNow')}
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-2 border-white/40 text-white hover:bg-white/20 backdrop-blur-md px-10 py-7 text-xl font-semibold rounded-full hover:scale-105 transition-all duration-300"
-              onClick={() => navigate('/about')}
-            >
-              {t('learnMore')}
             </Button>
           </div>
 
