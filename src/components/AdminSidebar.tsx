@@ -18,23 +18,26 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-const menuItems = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard, end: true },
-  { title: "Products", url: "/admin/products", icon: Package },
-  { title: "Orders", url: "/admin/orders", icon: ShoppingCart },
-  { title: "Customers", url: "/admin/customers", icon: Users },
-  { title: "Coupons", url: "/admin/coupons", icon: Tag },
-  { title: "Analytics", url: "/admin/analytics", icon: BarChart3 },
-  { title: "Settings", url: "/admin/settings", icon: Settings },
-];
+import { useTranslation } from 'react-i18next';
 
 export function AdminSidebar() {
+  const { t } = useTranslation();
+  
+  const menuItems = [
+    { title: t('dashboard'), url: "/admin", icon: LayoutDashboard, end: true },
+    { title: t('products'), url: "/admin/products", icon: Package },
+    { title: t('orders'), url: "/admin/orders", icon: ShoppingCart },
+    { title: t('customers'), url: "/admin/customers", icon: Users },
+    { title: t('coupons'), url: "/admin/coupons", icon: Tag },
+    { title: t('analytics'), url: "/admin/analytics", icon: BarChart3 },
+    { title: t('settings'), url: "/admin/settings", icon: Settings },
+  ];
+
   return (
     <Sidebar className="border-r">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
+          <SidebarGroupLabel>{t('adminPanel')}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (

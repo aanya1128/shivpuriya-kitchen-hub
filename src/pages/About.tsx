@@ -3,8 +3,11 @@ import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Award, Users, Globe, Heart } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { useTranslation } from 'react-i18next';
 
 const About = () => {
+  const { t } = useTranslation();
+  
   const milestones = [
     { year: "1985", event: "Founded Shivpuriya Patra Bhandar in Kalapipal" },
     { year: "1995", event: "Expanded to serve 50+ villages in Madhya Pradesh" },
@@ -16,23 +19,23 @@ const About = () => {
   const values = [
     {
       icon: Award,
-      title: "Quality First",
-      description: "Every product is carefully selected and tested for durability and authenticity."
+      title: t('qualityFirst'),
+      description: t('qualityDesc')
     },
     {
       icon: Users,
-      title: "Customer Centric",
-      description: "Our customers are at the heart of everything we do. Your satisfaction is our priority."
+      title: t('customerCentric'),
+      description: t('customerDesc')
     },
     {
       icon: Globe,
-      title: "Traditional Values",
-      description: "Preserving Indian cultural heritage through authentic brass and copper utensils."
+      title: t('traditionalValues'),
+      description: t('traditionalDesc')
     },
     {
       icon: Heart,
-      title: "Family Business",
-      description: "A legacy passed down through generations with the same commitment to excellence."
+      title: t('familyBusiness'),
+      description: t('familyDesc')
     }
   ];
 
@@ -46,11 +49,10 @@ const About = () => {
             <img src={logo} alt="Shivpuriya Patra Bhandar" className="w-32 h-32 object-contain" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            About Shivpuriya Patra Bhandar
+            {t('aboutTitle')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Established in 1985 in the heart of Kalapipal, Madhya Pradesh, we've been serving 
-            families with authentic brass, copper, and steel utensils for nearly four decades.
+            {t('aboutDescription')}
           </p>
         </section>
 
@@ -58,49 +60,35 @@ const About = () => {
         <section className="container mx-auto px-4 mb-16">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-6">Our Story</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-6">{t('ourStory')}</h2>
               <div className="space-y-4 text-muted-foreground">
-                <p>
-                  What started as a small shop in Kalapipal has grown into a trusted name 
-                  across Madhya Pradesh. Our founder's vision was simple: provide every 
-                  household with quality utensils that combine traditional craftsmanship 
-                  with modern functionality.
-                </p>
-                <p>
-                  Today, we continue this legacy by offering an extensive range of products 
-                  from authentic brass and copper cookware to contemporary kitchen appliances, 
-                  lunch boxes, and water bottles. Each product reflects our commitment to 
-                  quality and customer satisfaction.
-                </p>
-                <p>
-                  Our deep roots in Indian culture and traditions guide us in selecting 
-                  products that not only serve your daily needs but also connect you to 
-                  our rich heritage.
-                </p>
+                <p>{t('storyPara1')}</p>
+                <p>{t('storyPara2')}</p>
+                <p>{t('storyPara3')}</p>
               </div>
             </div>
             <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-foreground mb-4">Why Choose Us?</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-4">{t('whyChooseUs')}</h3>
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                  Authentic products sourced directly from trusted manufacturers
+                  {t('whyPoint1')}
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                  Quality assurance with rigorous testing standards
+                  {t('whyPoint2')}
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                  Competitive pricing without compromising on quality
+                  {t('whyPoint3')}
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                  Excellent customer service and support
+                  {t('whyPoint4')}
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                  Fast and reliable delivery across India
+                  {t('whyPoint5')}
                 </li>
               </ul>
             </div>
@@ -111,9 +99,9 @@ const About = () => {
         <section className="bg-muted/30 py-16">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foreground mb-4">Our Values</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">{t('ourValues')}</h2>
               <p className="text-xl text-muted-foreground">
-                The principles that guide our business and relationships
+                {t('valuesPrinciples')}
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -135,9 +123,9 @@ const About = () => {
         {/* Timeline Section */}
         <section className="container mx-auto px-4 py-16">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Our Journey</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">{t('ourJourney')}</h2>
             <p className="text-xl text-muted-foreground">
-              Key milestones in our growth story
+              {t('journeyMilestones')}
             </p>
           </div>
           <div className="max-w-4xl mx-auto">

@@ -11,8 +11,10 @@ import {
   Youtube,
   Send
 } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -35,16 +37,15 @@ const Footer = () => {
                 </div>
               </div>
               <p className="text-primary-foreground/80 text-sm leading-relaxed">
-                Your trusted partner for authentic utensils and modern kitchen solutions. 
-                Serving quality products since 1985 with traditional values and modern convenience.
+                {t('trustedPartner')}
               </p>
               
               {/* Newsletter */}
               <div className="pt-4">
-                <h4 className="font-semibold mb-3">Stay Updated</h4>
+                <h4 className="font-semibold mb-3">{t('stayUpdated')}</h4>
                 <div className="flex space-x-2">
                   <Input
-                    placeholder="Enter your email"
+                    placeholder={t('enterEmail')}
                     className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60 flex-1"
                   />
                   <Button size="icon" className="bg-secondary hover:bg-secondary-hover text-secondary-foreground">
@@ -56,7 +57,7 @@ const Footer = () => {
 
             {/* Contact Information */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Contact Us</h3>
+              <h3 className="text-lg font-semibold">{t('contactUs')}</h3>
               <div className="space-y-3">
                 <div className="flex items-start space-x-3">
                   <MapPin className="h-5 w-5 text-secondary mt-1 flex-shrink-0" />
@@ -89,86 +90,86 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Quick Links</h3>
+              <h3 className="text-lg font-semibold">{t('quickLinks')}</h3>
               <div className="flex flex-col space-y-2">
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  About Us
+                  {t('about')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Shipping Info
+                  {t('shippingInfo')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Return Policy
+                  {t('returnPolicy')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Track Order
+                  {t('trackOrder')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Size Guide
+                  {t('sizeGuide')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Bulk Orders
+                  {t('bulkOrders')}
                 </Button>
               </div>
             </div>
 
             {/* Customer Service */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Customer Services</h3>
+              <h3 className="text-lg font-semibold">{t('customerServices')}</h3>
               <div className="flex flex-col space-y-2">
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Help Center
+                  {t('helpCenter')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Contact Support
+                  {t('contactSupport')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Privacy Policy
+                  {t('privacyPolicy')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Terms & Conditions
+                  {t('termsConditions')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  FAQs
+                  {t('faqs')}
                 </Button>
                 <Button
                   variant="link"
                   className="h-auto p-0 text-primary-foreground/80 hover:text-secondary justify-start"
                 >
-                  Warranty
+                  {t('warranty')}
                 </Button>
               </div>
             </div>

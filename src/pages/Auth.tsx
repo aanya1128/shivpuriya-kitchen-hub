@@ -11,12 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Mail, Phone, User, Lock, ArrowLeft } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { z } from "zod";
+import { useTranslation } from 'react-i18next';
 
 const emailSchema = z.string().email({ message: "Invalid email address" });
 const phoneSchema = z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number" });
 const passwordSchema = z.string().min(6, { message: "Password must be at least 6 characters" });
 
 const Auth = () => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [authType, setAuthType] = useState<"email" | "phone">("email");
@@ -272,9 +274,9 @@ const Auth = () => {
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Verify OTP</CardTitle>
+            <CardTitle className="text-2xl">{t('verifyOtp')}</CardTitle>
             <CardDescription>
-              Enter the 6-digit code sent to {formData.phone}
+              {t('enterCode')} {formData.phone}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -299,14 +301,14 @@ const Auth = () => {
               className="w-full"
               disabled={loading || otp.length !== 6}
             >
-              {loading ? "Verifying..." : "Verify OTP"}
+              {loading ? t('verifying') : t('verifyOtpButton')}
             </Button>
             <Button
               variant="outline"
               onClick={() => setOtpStep(false)}
               className="w-full"
             >
-              Back
+              {t('back')}
             </Button>
           </CardContent>
         </Card>
@@ -319,20 +321,20 @@ const Auth = () => {
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Reset Password</CardTitle>
+            <CardTitle className="text-2xl">{t('resetPassword')}</CardTitle>
             <CardDescription>
-              Enter your email to receive reset instructions
+              {t('resetInstructions')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="resetEmail">Email</Label>
+              <Label htmlFor="resetEmail">{t('email')}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="resetEmail"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder={t('enterEmail')}
                   value={formData.resetEmail}
                   onChange={(e) => setFormData({ ...formData, resetEmail: e.target.value })}
                   className="pl-9"
@@ -344,14 +346,14 @@ const Auth = () => {
               className="w-full"
               disabled={loading}
             >
-              {loading ? "Sending..." : "Send Reset Link"}
+              {loading ? t('sending') : t('sendResetLink')}
             </Button>
             <Button
               variant="outline"
               onClick={() => setResetStep(false)}
               className="w-full"
             >
-              Back to Sign In
+              {t('backToSignIn')}
             </Button>
           </CardContent>
         </Card>
@@ -368,7 +370,7 @@ const Auth = () => {
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
-          <span>Back to Home</span>
+          <span>{t('backToHome')}</span>
         </Button>
       </div>
       <Card className="w-full max-w-md">
@@ -376,15 +378,15 @@ const Auth = () => {
           <div className="flex justify-center mb-4">
             <img src={logo} alt="Shivpuriya Patra Bhandar" className="h-16 w-16" />
           </div>
-          <CardTitle className="text-2xl text-primary">Shivpuriya Patra Bhandar</CardTitle>
-          <CardDescription>Welcome! Please sign in to your account</CardDescription>
+          <CardTitle className="text-2xl text-primary">{t('companyName')}</CardTitle>
+          <CardDescription>{t('welcomeMessage')}</CardDescription>
         </CardHeader>
         
         <CardContent>
           <Tabs defaultValue="signin" className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="signin">{t('login')}</TabsTrigger>
+              <TabsTrigger value="signup">{t('signup')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin">
