@@ -45,7 +45,7 @@ const Hero = () => {
           {/* Main Heading */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight animate-slide-up">
             <span className="text-white">{t('welcomeTo')}</span>
-            <span className="block text-primary-foreground dark:text-primary-foreground animate-bounce-gentle mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            <span className="block text-white dark:text-white animate-bounce-gentle mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               {t('companyName')}
             </span>
           </h1>

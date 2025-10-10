@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -24,19 +25,126 @@ const Checkout = () => {
     pincode: "",
   });
 
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    checkAuthAndFetchCart();
+  }, []);
+
+  const checkAuthAndFetchCart = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      toast({
+        variant: "destructive",
+        title: t('error') || "Error",
+        description: "Please login to place an order",
+      });
+      navigate('/auth');
+      return;
+    }
+
+    // Fetch cart items
+    try {
+      const { data: items, error } = await supabase
+        .from('carts')
+        .select('*, products(*)')
+        .eq('user_id', session.user.id);
+
+      if (error) throw error;
+
+      setCartItems(items || []);
+      
+      // Calculate total
+      const total = (items || []).reduce((sum, item) => {
+        return sum + ((item.products?.price || 0) * item.quantity);
+      }, 0);
+      setTotalAmount(total);
+    } catch (error: any) {
+      console.error('Error fetching cart:', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    // Simulate order placement
-    setTimeout(() => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast({
+          variant: "destructive",
+          title: t('error') || "Error",
+          description: "Please login to place an order",
+        });
+        navigate('/auth');
+        return;
+      }
+
+      // Generate order number
+      const orderNumber = `ORD${Date.now()}`;
+
+      // Create order in database
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert([{
+          user_id: session.user.id,
+          order_number: orderNumber,
+          total_amount: totalAmount,
+          shipping_address: {
+            fullName: formData.fullName,
+            address: formData.address,
+            city: formData.city,
+            state: formData.state,
+            pincode: formData.pincode,
+            phone: formData.phone,
+            email: formData.email,
+          },
+          status: 'pending',
+          payment_status: 'pending',
+        }])
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // Create order items
+      const orderItems = cartItems.map(item => ({
+        order_id: order.id,
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.products?.price || 0,
+        total_price: (item.products?.price || 0) * item.quantity,
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) throw itemsError;
+
+      // Clear cart after successful order
+      await supabase
+        .from('carts')
+        .delete()
+        .eq('user_id', session.user.id);
+
       toast({
         title: t('orderPlaced') || "Order Placed!",
         description: t('orderSuccess') || "Your order has been successfully placed.",
       });
+
+      navigate("/orders");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: t('error') || "Error",
+        description: error.message || "Failed to place order",
+      });
+    } finally {
       setLoading(false);
-      navigate("/");
-    }, 1500);
+    }
   };
 
   return (
@@ -142,7 +250,7 @@ const Checkout = () => {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span>{t('subtotal') || 'Subtotal'}</span>
-                  <span>₹0.00</span>
+                  <span>₹{totalAmount.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t('shipping') || 'Shipping'}</span>
@@ -150,7 +258,7 @@ const Checkout = () => {
                 </div>
                 <div className="border-t pt-4 flex justify-between font-bold text-lg">
                   <span>{t('total') || 'Total'}</span>
-                  <span>₹0.00</span>
+                  <span>₹{totalAmount.toFixed(2)}</span>
                 </div>
               </CardContent>
             </Card>

@@ -163,7 +163,64 @@ const resources = {
       saveChanges: "Save Changes",
       success: "Success",
       profileUpdated: "Profile updated successfully",
-      error: "Error"
+      error: "Error",
+      
+      // Footer - Additional
+      stayUpdated: "Stay Updated",
+      enterEmail: "Enter your email",
+      contactUs: "Contact Us",
+      shippingInfo: "Shipping Info",
+      returnPolicy: "Return Policy",
+      trackOrder: "Track Order",
+      sizeGuide: "Size Guide",
+      bulkOrders: "Bulk Orders",
+      customerServices: "Customer Services",
+      helpCenter: "Help Center",
+      contactSupport: "Contact Support",
+      privacyPolicy: "Privacy Policy",
+      termsConditions: "Terms & Conditions",
+      faqs: "FAQs",
+      warranty: "Warranty",
+      trustedPartner: "Your trusted partner for authentic utensils and modern kitchen solutions. Serving quality products with traditional values and modern convenience since 1985.",
+      
+      // About Page
+      aboutTitle: "About Shivpuriya Patra Bhandar",
+      aboutDescription: "Established in 1985 in the heart of Kalapipal, Madhya Pradesh, we have been serving families with authentic brass, copper, and steel utensils for nearly four decades.",
+      ourStory: "Our Story",
+      whyChooseUs: "Why Choose Us?",
+      ourValues: "Our Values",
+      ourJourney: "Our Journey",
+      qualityFirst: "Quality First",
+      customerCentric: "Customer Centric",
+      traditionalValues: "Traditional Values",
+      familyBusiness: "Family Business",
+      storyPara1: "What started as a small shop in Kalapipal has grown into a trusted name across Madhya Pradesh. Our founder's vision was simple: to provide every household with quality utensils that blend traditional craftsmanship with modern functionality.",
+      storyPara2: "Today, we continue this legacy by offering a wide range of products from authentic brass and copper cookware to contemporary kitchen appliances, lunch boxes, and water bottles. Each product reflects our commitment to quality and customer satisfaction.",
+      storyPara3: "Our deep roots in Indian culture and traditions guide us in selecting products that not only meet your daily needs but also connect you with our rich heritage.",
+      whyPoint1: "Authentic products sourced directly from trusted manufacturers",
+      whyPoint2: "Quality assurance with rigorous testing standards",
+      whyPoint3: "Competitive pricing without compromising on quality",
+      whyPoint4: "Excellent customer service and support",
+      whyPoint5: "Fast and reliable delivery across India",
+      valuesPrinciples: "The principles that guide our business and relationships",
+      qualityDesc: "Every product is carefully selected and tested for durability and authenticity.",
+      customerDesc: "Your satisfaction is our top priority. We listen and adapt to serve you better.",
+      traditionalDesc: "We honor traditional craftsmanship while embracing modern innovation.",
+      familyDesc: "Four generations of trust and dedication to serving our community.",
+      journeyMilestones: "Key moments that shaped who we are today",
+      
+      // Auth Page
+      welcomeBack: "Welcome Back",
+      signInContinue: "Sign in to continue to your account",
+      createAccount: "Create Account",
+      signUpStart: "Sign up to start your journey with us",
+      password: "Password",
+      forgotPassword: "Forgot Password?",
+      dontHaveAccount: "Don't have an account?",
+      alreadyHaveAccount: "Already have an account?",
+      signInButton: "Sign In",
+      signUpButton: "Sign Up",
+      orContinueWith: "Or continue with"
     }
   },
   hi: {
@@ -366,12 +423,25 @@ const resources = {
       whyPoint5: "भारत भर में तेज और विश्वसनीय डिलीवरी",
       valuesPrinciples: "वे सिद्धांत जो हमारे व्यवसाय और संबंधों का मार्गदर्शन करते हैं",
       qualityDesc: "हर उत्पाद को सावधानीपूर्वक चुना और स्थायित्व और प्रामाणिकता के लिए परीक्षण किया जाता है।",
-      customerDesc: "हमारे ग्राहक हमारे सभी कार्यों के केंद्र में हैं। आपकी संतुष्टि हमारी प्राथमिकता है।",
-      traditionalDesc: "प्रामाणिक पीतल और तांबे के बर्तनों के माध्यम से भारतीय सांस्कृतिक विरासत का संरक्षण।",
-      familyDesc: "एक विरासत जो पीढ़ियों से उत्कृष्टता के प्रति समान प्रतिबद्धता के साथ चली आ रही है।",
-      journeyMilestones: "हमारी वृद्धि कहानी में प्रमुख मील के पत्थर",
+      customerDesc: "आपकी संतुष्टि हमारी सर्वोच्च प्राथमिकता है। हम आपकी बेहतर सेवा के लिए सुनते और अनुकूलित करते हैं।",
+      traditionalDesc: "हम आधुनिक नवाचार को अपनाते हुए पारंपरिक शिल्प कौशल का सम्मान करते हैं।",
+      familyDesc: "हमारे समुदाय की सेवा के लिए विश्वास और समर्पण की चार पीढ़ियां।",
+      journeyMilestones: "वे महत्वपूर्ण क्षण जिन्होंने हमें आज का बनाया",
       
       // Auth Page
+      welcomeBack: "वापस स्वागत है",
+      signInContinue: "अपने खाते में जारी रखने के लिए साइन इन करें",
+      createAccount: "खाता बनाएं",
+      signUpStart: "हमारे साथ अपनी यात्रा शुरू करने के लिए साइन अप करें",
+      password: "पासवर्ड",
+      forgotPassword: "पासवर्ड भूल गए?",
+      dontHaveAccount: "खाता नहीं है?",
+      alreadyHaveAccount: "पहले से खाता है?",
+      signInButton: "साइन इन करें",
+      signUpButton: "साइन अप करें",
+      orContinueWith: "या इसके साथ जारी रखें",
+      
+      // OTP Verification
       verifyOtp: "OTP सत्यापित करें",
       enterCode: "भेजा गया 6 अंकों का कोड दर्ज करें",
       verifying: "सत्यापित हो रहा है...",
@@ -382,7 +452,6 @@ const resources = {
       backToSignIn: "साइन इन पर वापस जाएं",
       backToHome: "होम पर वापस जाएं",
       welcomeMessage: "स्वागत है! कृपया अपने खाते में साइन इन करें",
-      signInButton: "साइन इन",
       enterFullName: "अपना पूरा नाम दर्ज करें",
       yourEmail: "your@email.com",
       enterPassword: "अपना पासवर्ड दर्ज करें",
@@ -391,10 +460,8 @@ const resources = {
       sendOtp: "OTP भेजें",
       sendingOtp: "OTP भेजा जा रहा है...",
       enterPhoneNumber: "अपना फोन नंबर दर्ज करें",
-      forgotPassword: "पासवर्ड भूल गए?",
-      dontHaveAccount: "खाता नहीं है?",
-      alreadyHaveAccount: "पहले से खाता है?",
-      signUpNow: "अभी साइन अप करें"
+      signUpNow: "अभी साइन अप करें",
+      sending: "भेजा जा रहा है..."
     }
   }
 };
