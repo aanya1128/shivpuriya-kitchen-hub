@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 declare global {
   interface Window {
     Razorpay: any;
+    recaptchaVerifier: any;
   }
 }
 
@@ -24,7 +25,6 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
-    email: "",
     phone: "",
     address: "",
     city: "",
@@ -105,7 +105,6 @@ const Checkout = () => {
           const addr = defaultAddress;
           setFormData({
             fullName: addr.full_name,
-            email: formData.email,
             phone: addr.phone,
             address: addr.address_line1 + (addr.address_line2 ? `, ${addr.address_line2}` : ''),
             city: addr.city,
@@ -183,7 +182,6 @@ const Checkout = () => {
       },
       prefill: {
         name: formData.fullName,
-        email: formData.email,
         contact: formData.phone,
       },
       theme: {
@@ -228,7 +226,6 @@ const Checkout = () => {
             state: formData.state,
             pincode: formData.pincode,
             phone: formData.phone,
-            email: formData.email,
           },
           status: 'pending',
           payment_status: 'pending',
@@ -318,28 +315,16 @@ const Checkout = () => {
                       required
                     />
                   </div>
-                  
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email">{t('email')}</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">{t('phone')}</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        required
-                      />
-                    </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">{t('phone') || 'Phone'}</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      required
+                    />
                   </div>
 
                   <div className="space-y-2">
