@@ -6,9 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -27,10 +34,21 @@ const Checkout = () => {
 
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [addresses, setAddresses] = useState<any[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
 
   useEffect(() => {
     checkAuthAndFetchCart();
+    fetchAddresses();
+    loadRazorpayScript();
   }, []);
+
+  const loadRazorpayScript = () => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+  };
 
   const checkAuthAndFetchCart = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -64,6 +82,117 @@ const Checkout = () => {
     } catch (error: any) {
       console.error('Error fetching cart:', error);
     }
+  };
+
+  const fetchAddresses = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data, error } = await supabase
+        .from('addresses')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('is_default', { ascending: false });
+
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        setAddresses(data);
+        const defaultAddress = data.find(addr => addr.is_default);
+        if (defaultAddress) {
+          setSelectedAddress(defaultAddress.id);
+          const addr = defaultAddress;
+          setFormData({
+            fullName: addr.full_name,
+            email: formData.email,
+            phone: addr.phone,
+            address: addr.address_line1 + (addr.address_line2 ? `, ${addr.address_line2}` : ''),
+            city: addr.city,
+            state: addr.state,
+            pincode: addr.pincode,
+          });
+        }
+      }
+    } catch (error: any) {
+      console.error('Error fetching addresses:', error);
+    }
+  };
+
+  const handleAddressSelect = (addressId: string) => {
+    setSelectedAddress(addressId);
+    const address = addresses.find(addr => addr.id === addressId);
+    if (address) {
+      setFormData({
+        ...formData,
+        fullName: address.full_name,
+        phone: address.phone,
+        address: address.address_line1 + (address.address_line2 ? `, ${address.address_line2}` : ''),
+        city: address.city,
+        state: address.state,
+        pincode: address.pincode,
+      });
+    }
+  };
+
+  const initiatePayment = async (orderId: string, orderNumber: string) => {
+    const options = {
+      key: "rzp_test_vWJpFZ9vMELa7Y", // Replace with your Razorpay key
+      amount: totalAmount * 100, // Amount in paise
+      currency: "INR",
+      name: "Shivpuriya Patra Bhandar",
+      description: `Order ${orderNumber}`,
+      order_id: orderId,
+      handler: async function (response: any) {
+        try {
+          // Update order with payment details
+          const { error } = await supabase
+            .from('orders')
+            .update({
+              payment_status: 'completed',
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              status: 'confirmed',
+            })
+            .eq('id', orderId);
+
+          if (error) throw error;
+
+          // Clear cart
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            await supabase
+              .from('carts')
+              .delete()
+              .eq('user_id', session.user.id);
+          }
+
+          toast({
+            title: t('paymentSuccess') || "Payment Successful!",
+            description: t('orderConfirmed') || "Your order has been confirmed.",
+          });
+
+          navigate("/orders");
+        } catch (error: any) {
+          toast({
+            variant: "destructive",
+            title: t('error') || "Error",
+            description: error.message,
+          });
+        }
+      },
+      prefill: {
+        name: formData.fullName,
+        email: formData.email,
+        contact: formData.phone,
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,18 +253,8 @@ const Checkout = () => {
 
       if (itemsError) throw itemsError;
 
-      // Clear cart after successful order
-      await supabase
-        .from('carts')
-        .delete()
-        .eq('user_id', session.user.id);
-
-      toast({
-        title: t('orderPlaced') || "Order Placed!",
-        description: t('orderSuccess') || "Your order has been successfully placed.",
-      });
-
-      navigate("/orders");
+      // Initiate Razorpay payment
+      initiatePayment(order.id, orderNumber);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -161,6 +280,35 @@ const Checkout = () => {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  {addresses.length > 0 && (
+                    <div className="space-y-2 mb-6">
+                      <Label>{t('selectAddress') || 'Select Saved Address'}</Label>
+                      <RadioGroup value={selectedAddress} onValueChange={handleAddressSelect}>
+                        {addresses.map((address) => (
+                          <div key={address.id} className="flex items-start space-x-2 border rounded-lg p-3">
+                            <RadioGroupItem value={address.id} id={address.id} />
+                            <Label htmlFor={address.id} className="flex-1 cursor-pointer">
+                              <div className="space-y-1">
+                                <p className="font-semibold">{address.full_name}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {address.address_line1}
+                                  {address.address_line2 && `, ${address.address_line2}`}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  {address.city}, {address.state} - {address.pincode}
+                                </p>
+                                <p className="text-sm text-muted-foreground">{address.phone}</p>
+                              </div>
+                            </Label>
+                          </div>
+                        ))}
+                      </RadioGroup>
+                      <p className="text-sm text-muted-foreground">
+                        {t('orEnterNew') || 'Or enter a new address below'}
+                      </p>
+                    </div>
+                  )}
+                  
                   <div className="space-y-2">
                     <Label htmlFor="fullName">{t('fullName') || 'Full Name'}</Label>
                     <Input
