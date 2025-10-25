@@ -12,13 +12,16 @@ import logo from "@/assets/logo.png";
 import { useTranslation } from 'react-i18next';
 import { auth } from "@/lib/firebase";
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Auth = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [otpStep, setOtpStep] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [fullName, setFullName] = useState("");
   const [otp, setOtp] = useState("");
+  const [isSignup, setIsSignup] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   
   const { toast } = useToast();
@@ -62,6 +65,15 @@ const Auth = () => {
         variant: "destructive",
         title: "Error",
         description: "Please enter a valid phone number",
+      });
+      return;
+    }
+
+    if (isSignup && !fullName.trim()) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please enter your full name",
       });
       return;
     }
@@ -129,18 +141,29 @@ const Auth = () => {
       }
 
       if (!profile) {
-        // Create new profile with a temporary ID
-        const tempUserId = crypto.randomUUID();
-        const { error: insertError } = await supabase
-          .from('profiles')
-          .insert([{
-            id: tempUserId,
-            phone: phoneNumber,
-            full_name: '',
-            role: 'customer'
-          }]);
-        
-        if (insertError) throw insertError;
+        // Create new profile for signup
+        if (isSignup) {
+          const tempUserId = crypto.randomUUID();
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert([{
+              id: tempUserId,
+              phone: phoneNumber,
+              full_name: fullName,
+              role: 'customer'
+            }]);
+          
+          if (insertError) throw insertError;
+        } else {
+          // User trying to login but not registered
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "User not found. Please sign up first.",
+          });
+          setLoading(false);
+          return;
+        }
       }
 
       toast({
@@ -220,6 +243,7 @@ const Auth = () => {
           <span>{t('backToHome')}</span>
         </Button>
       </div>
+      
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -230,29 +254,74 @@ const Auth = () => {
         </CardHeader>
         
         <CardContent>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone">{t('phone') || 'Phone Number'}</Label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="+91 9999999999"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="pl-9"
-                />
+          <Tabs defaultValue="login" onValueChange={(value) => setIsSignup(value === "signup")}>
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="login">Login</TabsTrigger>
+              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="login">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phone-login">{t('phone') || 'Phone Number'}</Label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="phone-login"
+                      type="tel"
+                      placeholder="+91 9999999999"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <Button
+                  onClick={handleSendOTP}
+                  className="w-full"
+                  disabled={loading}
+                >
+                  {loading ? "Sending OTP..." : "Send OTP"}
+                </Button>
               </div>
-            </div>
-            <Button
-              onClick={handleSendOTP}
-              className="w-full"
-              disabled={loading}
-            >
-              {loading ? "Sending OTP..." : "Send OTP"}
-            </Button>
-          </div>
+            </TabsContent>
+            
+            <TabsContent value="signup">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="name-signup">Full Name</Label>
+                  <Input
+                    id="name-signup"
+                    type="text"
+                    placeholder="Enter your full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone-signup">{t('phone') || 'Phone Number'}</Label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="phone-signup"
+                      type="tel"
+                      placeholder="+91 9999999999"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <Button
+                  onClick={handleSendOTP}
+                  className="w-full"
+                  disabled={loading}
+                >
+                  {loading ? "Sending OTP..." : "Sign Up with OTP"}
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
       <div id="recaptcha-container"></div>
