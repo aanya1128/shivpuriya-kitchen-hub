@@ -50,14 +50,27 @@ const Auth = () => {
   useEffect(() => {
     // Initialize reCAPTCHA
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'invisible',
-        callback: () => {
-          // reCAPTCHA solved
-        }
-      });
+      try {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+          size: 'invisible',
+          callback: () => {
+            console.log('reCAPTCHA solved successfully');
+          },
+          'expired-callback': () => {
+            console.log('reCAPTCHA expired');
+            window.recaptchaVerifier = null;
+          }
+        });
+      } catch (error) {
+        console.error('Error initializing reCAPTCHA:', error);
+        toast({
+          variant: "destructive",
+          title: "Configuration Error",
+          description: "Failed to initialize phone authentication. Please contact support.",
+        });
+      }
     }
-  }, []);
+  }, [toast]);
 
   const handleSendOTP = async () => {
     if (!phoneNumber || phoneNumber.length < 10) {
@@ -81,6 +94,11 @@ const Auth = () => {
     setLoading(true);
     try {
       const formattedPhone = phoneNumber.startsWith('+') ? phoneNumber : `+91${phoneNumber}`;
+      
+      if (!window.recaptchaVerifier) {
+        throw new Error('reCAPTCHA not initialized. Please refresh the page.');
+      }
+      
       const appVerifier = window.recaptchaVerifier;
       
       const result = await signInWithPhoneNumber(auth, formattedPhone, appVerifier);
@@ -92,11 +110,32 @@ const Auth = () => {
         description: "Please check your phone for the verification code.",
       });
     } catch (error: any) {
+      console.error('Phone auth error:', error);
+      
+      let errorMessage = error.message || "Failed to send OTP";
+      
+      // Provide specific error messages for common issues
+      if (error.code === 'auth/configuration-not-found') {
+        errorMessage = "Phone authentication is not properly configured. Please ensure:\n1. Phone Sign-in is enabled in Firebase Console\n2. This domain is authorized in Firebase settings\n3. reCAPTCHA is properly configured";
+      } else if (error.code === 'auth/invalid-phone-number') {
+        errorMessage = "Invalid phone number format. Please use format: +91XXXXXXXXXX";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Too many attempts. Please try again later.";
+      } else if (error.code === 'auth/quota-exceeded') {
+        errorMessage = "SMS quota exceeded. Please contact support.";
+      }
+      
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Failed to send OTP",
+        title: "Authentication Error",
+        description: errorMessage,
       });
+      
+      // Reset reCAPTCHA on error
+      if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.clear();
+        window.recaptchaVerifier = null;
+      }
     } finally {
       setLoading(false);
     }
